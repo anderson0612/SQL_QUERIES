@@ -1,0 +1,91 @@
+# SELECT EM: CREATE TABLE, INSERT, UPDATE E DELETE.
+
+# CRIANDO TABELAS POR MEIO DE SELECT.
+
+# SURGIU A NECESSIDADE DE CRIARMOS UMA TABELA CHAMADA COMCLIEN_BKP
+# COM A MESMA ESTRUTURA E DADOS DA COMCLIEN, ONDE O C_ESTACLIEN SEJA IGUAL A 'SP'.
+# PODEMOS REALIZAR REALIZAR ALGUMAS OPERAÇÔES COM ESSES REGISTROS
+# E, POR SEGURANÇA NÃO USAREMOS OS DADOS DA TABELA ORIGINAL.
+
+
+CREATE TABLE COMCLIEN_BKP AS (
+	SELECT * 
+	FROM COMCLIEN
+	WHERE C_ESTACLIEN = 'SP');
+Query OK, 3 rows affected (1.21 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+# INSERINDO REGISTROS POR MEIO DE SELECT
+
+# CONSTANTEMENTE, SURGE A NECESSIDADE DE INSERIR REGISTROS EM ALGUMA TABELA, A FIM DE REALIZAR
+# ALGUM PROCESSO NO BANCO DE DADOS.
+# VAMOS CRIAR UMA TABELA PARA AGENDA TELEFÔNICA. ELA TERÁ COMO BASE ALGUNS CAMPOS DA TABELA DE CLIENTES
+# E TODOS ELES SERÃO CADASTRADOS NELA TAMBÉM.
+
+# O CAMPO N_NUMECLIEN SERÁ UMA FOREIGN KEY DA TABELA CLIENTES, MAS NÃO TERÁ A OBRIGATORIEDADE DE SER PREENCHIDA,
+# UMA VEZ QUE PODEMOS TER CONTATOS QUE NÃO SERÃO NECESSARIAMENTE UM CLIENTE.
+
+CREATE TABLE COMCONTATO(
+	N_NUMECONTATO INT NOT NULL AUTO_INCREMENT,
+	C_NOMECONTATO VARCHAR (200),
+	C_FONECONTATO VARCHAR (30),
+	C_CIDACONTATO VARCHAR (200),
+	C_ESTACONTATO VARCHAR (2),
+	N_NUMECLIEN INT,
+	PRIMARY KEY (N_NUMECONTATO));
+Query OK, 0 rows affected (0.18 sec)
+
+# VAMOS POPULAR AS COLUNAS DA TABELA COMCONTATO COM ESSAS 
+# INFORMAÇÔES QUE TEMOS DA TABELA COMCLIEN.
+
+INSERT INTO COMCONTATO(
+SELECT N_NUMECLIEN,
+	   C_NOMECLIEN,
+	   C_FONECLIEN,
+	   C_CIDACLIEN,
+	   C_ESTACLIEN,
+	   N_NUMECLIEN
+	FROM COMCLIEN);
+Query OK, 10 rows affected (0.32 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+# PARA VISUALIZAR OS REGISTROS DA TABELA, FAÇA UM SELECT PARA LISTÁ-LOS.
+
+SELECT * FROM COMCONTATO;
+
++---------------+-----------------------+----------------+-------------------------+---------------+-------------+
+| N_NUMECONTATO | C_NOMECONTATO         | C_FONECONTATO  | C_CIDACONTATO           | C_ESTACONTATO | N_NUMECLIEN |
++---------------+-----------------------+----------------+-------------------------+---------------+-------------+
+|             1 | AARONSON FURNITURE    | (21) 8167-6584 | QUEIMADOS               | RJ            |           1 |
+|             2 | LITTLER               | (27) 7990-9502 | SERRA                   | ES            |           2 |
+|             3 | KELSEY  NEIGHBOURHOOD | (11) 4206-9703 | BRAGANÇA PAULISTA       | SP            |           3 |
+|             4 | GREAT AMERICAN MUSIC  | (75) 7815-7801 | SANTO ANTÔNIO DE JESUS  | BA            |           4 |
+|             5 | LIFE PLAN COUNSELLING | (17) 4038-9355 | BEBEDOURO               | SP            |           5 |
+|             6 | PRACTI-PLAN           | (28) 2267-6159 | CACHOEIRO DE ITAPEMIRI  | ES            |           6 |
+|             7 | SPORTSWEST            | (61) 4094-7184 | TAGUATINGA              | DF            |           7 |
+|             8 | HUGHES MARKETS        | (21) 7984-9809 | RIO DE JANEIRO          | RJ            |           8 |
+|             9 | AUTO WORKS            | (21) 8548-5555 | RIO DE JANEIRO          | RJ            |           9 |
+|            10 | DAHLKEMPER            | (11) 4519-7670 | SÃO PAULO               | SP            |          10 |
++---------------+-----------------------+----------------+-------------------------+---------------+-------------+
+10 rows in set (0.00 sec)
+
+# ALTERANDO REGISTROS POR MEIO DE SELECT 
+
+UPDATE COMCONTATO
+   	 SET C_CIDACONTATO = 'LONDRINA',
+         C_ESTACONTATO = 'PR'
+     WHERE N_NUMECLIEN IN (SELECT N_NUMECLIEN
+                            FROM COMCLIEN_BKP);
+Query OK, 3 rows affected (0.35 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+   
+# DELETANDO REGISTROS POR MEIO DE SELECT
+
+DELETE FROM COMCONTATO 
+WHERE N_NUMECLIEN NOT IN (SELECT N_NUMECLIEN 
+							FROM COMVENDA);
+
+COMMIT;
+
+SELECT * FROM COMCONTATO;

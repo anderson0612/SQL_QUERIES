@@ -1,0 +1,200 @@
+-- RETORNANDO A DATA ATUAL
+SELECT CURDATE();
+
++------------+
+| CURDATE()  |
++------------+
+| 2024-08-26 |
++------------+
+
+SELECT CURDATE() AS DATA_ATUAL;
+
++------------+
+| DATA_ATUAL |
++------------+
+| 2024-08-26 |
++------------+
+
+-- RETORNANDO A DATA E A HORA ATUAL
+
+SELECT NOW();
+
++---------------------+
+| NOW()               |
++---------------------+
+| 2024-08-26 11:34:56 |
++---------------------+
+
+SELECT NOW() AS DATA_E_HORA_ATUAL;
+
++---------------------+
+| DATA_E_HORA_ATUAL   |
++---------------------+
+| 2024-08-26 11:35:52 |
++---------------------+
+
+-- SYSDATE(): IGUALMENTE AO NOW(), SUA CONSULTA RETORNA A DATA E A HORA JUNTOS
+
+SELECT SYSDATE();
+
++---------------------+
+| SYSDATE()           |
++---------------------+
+| 2024-08-26 11:38:45 |
++---------------------+
+
+SELECT SYSDATE() AS DATA_E_HORA_ATUAL;
+
++---------------------+
+| DATA_E_HORA_ATUAL   |
++---------------------+
+| 2024-08-26 11:39:37 |
++---------------------+
+
+-- PARA RETORNAR SOMENTE O HORÁRIO ATUAL
+SELECT CURTIME();
+
++-----------+
+| CURTIME() |
++-----------+
+| 11:41:29  |
++-----------+
+
+SELECT CURTIME() AS HORARIO_ATUAL;
+
++---------------+
+| HORARIO_ATUAL |
++---------------+
+| 11:42:29      |
++---------------+
+
+-- RETORNANDO O INTERVÁLO DE DUAS DATAS:
+
+SELECT DATEDIFF('2024-08-26 23:59:59', '2024-07-26');
+
++-----------------------------------------------+
+| DATEDIFF('2024-08-26 23:59:59', '2024-07-26') |
++-----------------------------------------------+
+|                                            31 |
++-----------------------------------------------+
+
+SELECT DATEDIFF('2024-08-26 23:59:59', '2024-07-26') AS INTERVALO_DE_DATAS;
+
++--------------------+
+| INTERVALO_DE_DATAS |
++--------------------+
+|                 31 |
++--------------------+
+
+-- ADICIONAR DIAS A UMA DATA:
+
+SELECT DATE_ADD('2024-01-01', INTERVAL 31 DAY);
+
++-----------------------------------------+
+| DATE_ADD('2024-01-01', INTERVAL 31 DAY) |
++-----------------------------------------+
+| 2024-02-01                              |
++-----------------------------------------+
+
+SELECT DATE_ADD('2024-01-01', INTERVAL 31 DAY) AS 31_DIAS_ADICIONADO;
+
++--------------------+
+| 31_DIAS_ADICIONADO |
++--------------------+
+| 2024-02-01         |
++--------------------+
+
+-- SELECIONANDO O NOME DO DIA DA SEMANA 
+
+SELECT DAYNAME('2024-08-27');
+
++-----------------------+
+| DAYNAME('2024-08-27') |
++-----------------------+
+| Tuesday               |
++-----------------------+
+
+SELECT DAYNAME('2024-08-27') AS DIA_DA_SEMANA;
+
++---------------+
+| DIA_DA_SEMANA |
++---------------+
+| Tuesday       |
++---------------+
+
+-- RETORNAR O DIA DO MÊS
+
+SELECT DAYOFMONTH ('2024-08-27');
+
++---------------------------+
+| DAYOFMONTH ('2024-08-27') |
++---------------------------+
+|                        27 |
++---------------------------+
+
+SELECT DAYOFMONTH ('2024-08-27') AS DIA_DO_MES;
+
++------------+
+| DIA_DO_MES |
++------------+
+|         27 |
++------------+
+
+-- EXTRTAIR O ANO DE UMA DATA
+
+SELECT YEAR ('2024-08-27')
+
++---------------------+
+| YEAR ('2024-08-27') |
++---------------------+
+|                2024 |
++---------------------+
+
+SELECT YEAR ('2024-08-27') AS ANO_DA_DATA;
+
++-------------+
+| ANO_DA_DATA |
++-------------+
+|        2024 |
++-------------+
+
+-- EXTRAIR O ÚLTIMO DIA DO MÊS
+
+SELECT LAST_DAY ('2024-08-27') 
+
++-------------------------+
+| LAST_DAY ('2024-08-27') |
++-------------------------+
+| 2024-08-31              |
++-------------------------+
+
+SELECT LAST_DAY ('2024-08-27') AS ULTIMO_DIA; 
+
++------------+
+| ULTIMO_DIA |
++------------+
+| 2024-08-31 |
++------------+
+
+-- FORMATANDO DATAS
+
+SELECT DATE_FORMAT ('2024-08-27',GET_FORMAT (DATE,'EUR'));
+
++----------------------------------------------------+
+| DATE_FORMAT ('2024-08-27',GET_FORMAT (DATE,'EUR')) |
++----------------------------------------------------+
+| 27.08.2024                                         |
++----------------------------------------------------+
+
+SELECT DATE_FORMAT ('2024-08-27',GET_FORMAT (DATE,'EUR')) AS FORMATADO;
+
++------------+
+| FORMATADO  |
++------------+
+| 27.08.2024 |
++------------+
+
+-- CONVERTENDO OS DADOS DE TEXTO PARA DATA UTILIZANDO A FUNÇÃO STR_TO_DATE
+-- E, EM SEGUIDA FORMATANDO.
+
+SELECT STR_TO_DATE ('01-01-2015' ,GET_FORMAT(DATE,'EUR'));

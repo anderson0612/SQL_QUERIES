@@ -1,0 +1,53 @@
+#CRIANDO NOSSO PRIMEIRO BANCO DE DADOS
+
+/* NOVO USUÁRIO*/
+
+create user 'usermysql@' identified by 'cursomysql';
+
+#CONCEDENDO DIREITO TOTAL AO USUÁRIO
+
+grant all privileges on *.* to 'usermysql'@'%' with grant option;
+
+#REVOGANDO ACESSO AO USUÁRIO
+
+/* revoke all on *.* from 'usermysql';*/
+
+
+
+## CONTROLE DE ACESSO
+
+mysql> grant all on *.* to usermysql@localhost;
+mysql> revoke all on *.* from usermysql;
+
+utilizando os comandos:
+
+## para rotinas
+mysql> grant routine on comercial.* to usermysql@localhost;
+
+## para procedures
+grant execute on procedure comercial.nomeprocedure
+to usermysql@localhost; 
+
+## Nível proxy user: o privilégio de proxy permite que um usuário seja
+
+proxy de outro. O usuário externo de um outro host assume os privi-
+légios de um usuário.
+
+grant PROXY on usermysql@localhost to
+'usuarioexterno'@'hostexterno';
+
+#REQUISITOS PARA O PROJETO
+
+-- fomos contratados para desenvolver um projeto para um cliente, que solicitou um sistema
+-- para vendas de produtos. Nesse sistema, ele gostaria de fazer os seguintes cadastros:
+
+--CLIENTES
+--FORNECEDORES
+--PRODUTOS
+--VENDAS
+
+
+
+
+
+

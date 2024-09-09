@@ -1,0 +1,452 @@
+/* FUNÇÃO DE AGREGAÇÃO */
+
+ SELECT C_CODICLIEN, C_RAZACLIEN 
+ 	FROM COMVENDA, COMCLIEN
+   WHERE COMVENDA.N_NUMECLIEN = COMCLIEN.N_NUMECLIEN
+   ORDER BY C_RAZACLIEN;
+
++-------------+------------------------+
+| C_CODICLIEN | C_RAZACLIEN            |
++-------------+------------------------+
+| 0001        | AARONSON FURNITURE LTD |
+| 0001        | AARONSON FURNITURE LTD |
+| 0001        | AARONSON FURNITURE LTD |
+| 0009        | AUTO WORKS LTDA        |
+| 0009        | AUTO WORKS LTDA        |
+| 0009        | AUTO WORKS LTDA        |
+| 0004        | GREAT AMERICAN MUSIC   |
+| 0008        | HUGHES MARKETS LTDA    |
+| 0008        | HUGHES MARKETS LTDA    |
+| 0003        | KELSEY  NEIGHBOURHOOD  |
+| 0003        | KELSEY  NEIGHBOURHOOD  |
+| 0003        | KELSEY  NEIGHBOURHOOD  |
+| 0005        | LIFE PLAN COUNSELLING  |
+| 0005        | LIFE PLAN COUNSELLING  |
+| 0002        | LITTLER  LTDA          |
+| 0002        | LITTLER  LTDA          |
+| 0006        | PRACTI-PLAN LTDA       |
+| 0006        | PRACTI-PLAN LTDA       |
+| 0007        | SPORTSWEST LTDA        |
+| 0007        | SPORTSWEST LTDA        |
++-------------+------------------------+
+
+/* GROUP BY */
+
+SELECT C_CODICLIEN, C_RAZACLIEN
+  FROM COMCLIEN, COMVENDA
+ WHERE COMVENDA.N_NUMECLIEN = COMCLIEN.N_NUMECLIEN
+ GROUP BY C_CODICLIEN, C_RAZACLIEN
+ ORDER BY C_RAZACLIEN;   
+
++-------------+------------------------+
+| C_CODICLIEN | C_RAZACLIEN            |
++-------------+------------------------+
+| 0001        | AARONSON FURNITURE LTD |
+| 0009        | AUTO WORKS LTDA        |
+| 0004        | GREAT AMERICAN MUSIC   |
+| 0008        | HUGHES MARKETS LTDA    |
+| 0003        | KELSEY  NEIGHBOURHOOD  |
+| 0005        | LIFE PLAN COUNSELLING  |
+| 0002        | LITTLER  LTDA          |
+| 0006        | PRACTI-PLAN LTDA       |
+| 0007        | SPORTSWEST LTDA        |
++-------------+------------------------+
+9 rows in set (0.04 sec)
+
+ SELECT
+    ->     C.C_CODICLIEN,
+    ->     C.C_RAZACLIEN,
+    ->     COUNT(V.N_NUMEVENDA) AS QTDE
+    -> FROM
+    ->     COMCLIEN C
+    -> INNER JOIN COMVENDA V ON C.N_NUMECLIEN = V.N_NUMECLIEN
+    -> GROUP BY
+    ->     C.C_CODICLIEN,
+    ->     C.C_RAZACLIEN
+    -> ORDER BY
+    ->     C.C_RAZACLIEN;
+
++-------------+------------------------+------+
+| C_CODICLIEN | C_RAZACLIEN            | QTDE |
++-------------+------------------------+------+
+| 0001        | AARONSON FURNITURE LTD |    3 |
+| 0009        | AUTO WORKS LTDA        |    3 |
+| 0004        | GREAT AMERICAN MUSIC   |    1 |
+| 0008        | HUGHES MARKETS LTDA    |    2 |
+| 0003        | KELSEY  NEIGHBOURHOOD  |    3 |
+| 0005        | LIFE PLAN COUNSELLING  |    2 |
+| 0002        | LITTLER  LTDA          |    2 |
+| 0006        | PRACTI-PLAN LTDA       |    2 |
+| 0007        | SPORTSWEST LTDA        |    2 |
++-------------+------------------------+------+
+
+
+SELECT COUNT(*)
+  FROM COMCLIEN;    
+
++----------+
+| COUNT(*) |
++----------+
+|       10 |
++----------+
+1 row in set (0.08 sec)
+
+/* HAVING COUNT */
+
+SELECT C_RAZACLIEN, COUNT(N_NUMEVENDA)
+  FROM COMCLIEN, COMVENDA
+WHERE COMVENDA.N_NUMECLIEN = COMCLIEN.N_NUMECLIEN
+GROUP BY C_RAZACLIEN
+HAVING COUNT(N_NUMEVENDA) > 2;
+
++------------------------+--------------------+
+| C_RAZACLIEN            | COUNT(N_NUMEVENDA) |
++------------------------+--------------------+
+| AARONSON FURNITURE LTD |                  3 |
+| KELSEY  NEIGHBOURHOOD  |                  3 |
+| AUTO WORKS LTDA        |                  3 |
++------------------------+--------------------+
+
+OU 
+
+/* HAVING COUNT COM INNER JOIN */
+
+SELECT 
+    C.C_RAZACLIEN AS CustomerName, 
+    COUNT(V.N_NUMEVENDA) AS TotalSales
+FROM 
+    COMCLIEN C
+INNER JOIN COMVENDA V ON C.N_NUMECLIEN = V.N_NUMECLIEN
+GROUP BY 
+    C.C_RAZACLIEN
+HAVING 
+    COUNT(V.N_NUMEVENDA) > 2;
+
++------------------------+------------+
+| CustomerName           | TotalSales |
++------------------------+------------+
+| AARONSON FURNITURE LTD |          3 |
+| KELSEY  NEIGHBOURHOOD  |          3 |
+| AUTO WORKS LTDA        |          3 |
++------------------------+------------+
+
+/ * MAX() E MIN() */
+
+SELECT MAX(N_TOTAVENDA) MAIOR_VENDA
+  FROM COMVENDA;
+
+  +-------------+
+| MAIOR_VENDA |
++-------------+
+|    25141.02 |
++-------------+
+
+SELECT MIN(N_TOTAVENDA) MENOR_VENDA
+  FROM COMVENDA;
+
++-------------+
+| MENOR_VENDA |
++-------------+
+|     4650.64 |
++-------------+
+
+-- RETORNAR OS DOIS VALORES AO MESMO TEMPO
+
+SELECT MIN(N_TOTAVENDA) MENOR_VENDA, MAX(N_TOTAVENDA)
+  MAIOR_VENDA FROM COMVENDA;
+
++-------------+-------------+
+| MENOR_VENDA | MAIOR_VENDA |
++-------------+-------------+
+|     4650.64 |    25141.02 |
++-------------+-------------+
+
+/* SUM() */
+
+SELECT SUM(N_VALOVENDA) VALOR_VENDA,
+       SUM(N_DESCVENDA) DESCONTOS,
+        SUM(N_TOTAVENDA) TOTAL_VENDA
+ FROM COMVENDA
+WHERE D_DATAVENDA BETWEEN '2015-01-01' AND '2015-01-31';
+
+-- CONDIÇÃO BETWEEN SERVE PARA VERIFICAR UM INTERVALO ENTRE DUAS VARIÁVEIS, SEJA DE DATAS OU NUMÉRICOS.
+
++-------------+-----------+-------------+
+| VALOR_VENDA | DESCONTOS | TOTAL_VENDA |
++-------------+-----------+-------------+
+|   244279.29 |      0.00 |   244279.29 |
++-------------+-----------+-------------+
+
+AVG()
+
+-- CALCULANDO A MÉDIA
+
+SELECT FORMAT (AVG(N_TOTAVENDA),2)
+  FROM COMVENDA;
+
++-----------------------------+
+| FORMAT (AVG(N_TOTAVENDA),2) |
++-----------------------------+
+| 12,213.96                   |
++-----------------------------+
+
+-- OU
+
+SELECT FORMAT (AVG(N_TOTAVENDA),2) AS MEDIA
+  FROM COMVENDA;
++-----------+
+| MEDIA     |
++-----------+
+| 12,213.96 |
++-----------+
+
+SELECT C_CODIPRODU, C_DESCPRODU
+  FROM COMPRODU
+ WHERE SUBSTR(C_CODIPRODU, 1,3) = '123'
+   AND LENGTH(C_CODIPRODU) > 4;
+
++-------------+-------------+
+| C_CODIPRODU | C_DESCPRODU |
++-------------+-------------+
+| 123131      | NOTEBOOK    |
+| 123223      | SMARTPHONE  |
++-------------+-------------+
+
+-- OU 
+
+SELECT C_CODIPRODU, C_DESCPRODU
+FROM COMPRODU
+WHERE C_CODIPRODU LIKE '123%'
+  AND LENGTH(C_CODIPRODU) > 4;
+
++-------------+-------------+
+| C_CODIPRODU | C_DESCPRODU |
++-------------+-------------+
+| 123131      | NOTEBOOK    |
+| 123223      | SMARTPHONE  |
++-------------+-------------+
+
+-- SELECIONANDO OS 5 PRIMEIROS CARACTERES DO CAMPO C_RAZACLIEN
+
+SELECT SUBSTR(C_RAZACLIEN, 1,5) AS RAZAO_SOCIAL,
+       LENGTH(CODIPRODU) AS TAMANHO_COD
+  FROM COMCLIEN
+ WHERE N_NUMECLIEN = 1; 
+
+
+SELECT SUBSTR(C_RAZACLIEN, 1, 5) AS RAZAO_SOCIAL,
+       LENGTH(C_CODIPRODU) AS TAMANHO_COD
+FROM COMCLIEN                                     # CODIGO DO CHATGPT
+WHERE N_NUMECLIEN = 1;
+
+
+SELECT SUBSTR(C.C_RAZACLIEN, 1,5) AS RAZAO_SOCIAL,
+       LENGTH(C.C_CODIPRODU) AS TAMANHO_COD,
+FROM COMCLIEN                                  
+WHERE C.N_NUMECLIEN = 1;
+
+SELECT * FROM COMPRODU;
+
+/* CONCAT() E CONCAT_WS() */
+
+SELECT CONCAT (C_RAZAFORNE, ' - FONE: ', C_FONEFORNE)
+   FROM COMFORNE
+   ORDER BY C_RAZAFORNE;
+
++-------------------------------------------------------+
+| CONCAT (C_RAZAFORNE, ' - FONE: ', C_FONEFORNE)        |
++-------------------------------------------------------+
+| DUN RITE LAWN MAINTENANCE LTDA - FONE: (85) 7886-8837 |
+| SEWFRO FABRICS LTDA - FONE: (91) 5171-8483            |
++-------------------------------------------------------+
+
+SELECT
+CONCAT (C_CODICLIEN,'  ',C_RAZACLIEN, '  ', C_NOMECLIEN)
+  FROM COMCLIEN
+ WHERE C_RAZACLIEN LIKE 'GREA%';
+
++----------------------------------------------------------+
+| CONCAT (C_CODICLIEN,'  ',C_RAZACLIEN, '  ', C_NOMECLIEN) |
++----------------------------------------------------------+
+| 0004  GREAT AMERICAN MUSIC  GREAT AMERICAN MUSIC         |
++----------------------------------------------------------+
+
+-- SEPARANDO ESPAÇO COM PONTO E VIRGULA (;)
+
+SELECT
+CONCAT_WS (";",C_CODICLIEN, C_RAZACLIEN, C_NOMECLIEN)
+  FROM COMCLIEN 
+ WHERE C_RAZACLIEN LIKE 'GREA%';
+
+ +-------------------------------------------------------+
+| CONCAT_WS (";",C_CODICLIEN, C_RAZACLIEN, C_NOMECLIEN) |
++-------------------------------------------------------+
+| 0004;GREAT AMERICAN MUSIC;GREAT AMERICAN MUSIC        |
++-------------------------------------------------------+
+
+/* LCASE() E LOWER() */
+
+-- TRANFORMANDO LETRAS MAIÚSCULAS EM MINÚSCULAS
+
+SELECT LCASE (C_RAZACLIEN)
+  FROM COMCLIEN;
+
++------------------------+
+| LCASE (C_RAZACLIEN)    |
++------------------------+
+| aaronson furniture ltd |
+| littler  ltda          |
+| kelsey  neighbourhood  |
+| great american music   |
+| life plan counselling  |
+| practi-plan ltda       |
+| sportswest ltda        |
+| hughes markets ltda    |
+| auto works ltda        |
+| dahlkemper  ltda       |
++------------------------+
+
+SELECT LOWER (C_RAZACLIEN)
+  FROM COMCLIEN;
+
++------------------------+
+| LOWER (C_RAZACLIEN)    |
++------------------------+
+| aaronson furniture ltd |
+| littler  ltda          |
+| kelsey  neighbourhood  |
+| great american music   |
+| life plan counselling  |
+| practi-plan ltda       |
+| sportswest ltda        |
+| hughes markets ltda    |
+| auto works ltda        |
+| dahlkemper  ltda       |
++------------------------+
+
+/* UCASE() */
+
+-- RETORNAR OS REGISTROS PARA LETRAS MAIÚSCULAS UTILIZANDO A FUNÇAÕ UCASE.
+SELECT UCASE ('BANCO DE DADOS MYSQL')
+  FROM DUAL;
+
++--------------------------------+
+| UCASE ('BANCO DE DADOS MYSQL') |
++--------------------------------+
+| BANCO DE DADOS MYSQL           |
++--------------------------------+
+
+/* FUNCÇÕES DE CÁLCULOS E OPERADORES ARITMÉTICOS */
+
+/*ROUND()*/
+
+SELECT ('213.142,2')
+  FROM DUAL;
+
++-----------+
+| 213.142,2 |
++-----------+
+| 213.142,2 |
++-----------+
+
+-- OU
+
+/* FORMAT */
+
+--NÃO FAZ ARREDONDAMENTO, MAS FORMATA O VALOR COM APENAS CASAS DECIMAIS DESEJADAS.
+
+SELECT FORMAT('21123.142',2) FROM DUAL;
+
++-----------------------+
+| FORMAT('21123.142',2) |
++-----------------------+
+| 21,123.14             |
++-----------------------+
+
+/* TRUNCATE */
+-- OMITIR AS CASAS DECIMAIS 
+
+SELECT TRUNCATE (MAX(N_TOTAVENDA),0) MAIOR_VENDA
+  FROM COMVENDA;
+
++-------------+
+| MAIOR_VENDA |
++-------------+
+|       25141 |
++-------------+
+
+-- OU 
+
+SELECT TRUNCATE (MIN(N_TOTAVENDA),1) MENOR_VENDA
+  FROM COMVENDA;
+
++-------------+
+| MENOR_VENDA |
++-------------+
+|      4650.6 |
++-------------+
+
+/* SQRT */
+
+-- OBTENDO A RAIZ QUADRADA
+
+SELECT SQRT(4);
+
++---------+
+| SQRT(4) |
++---------+
+|       2 |
++---------+
+
+/* PI,SENO,COSSENO E TANGENTE */
+
+-- CONSULTANDO O VALOR DE pi:
+
+SELECT PI();
+
++----------+
+| PI()     |
++----------+
+| 3.141593 |
++----------+
+
+-- COSULTANDO O VALOR DE SENO DO pi.
+
+SELECT SIN (PI());
+
++------------------------+
+| SIN(PI())              |
++------------------------+
+| 1.2246467991473532e-16 |
++------------------------+
+
+-- CONSULTANDO O VALOR DE COSSENO DE pi.
+
+SELECT COS (PI());
+
++------------+
+| COS (PI()) |
++------------+
+|         -1 |
++------------+
+
+-- PARA CONSULTAR O VALOR DA TANGENTE DE pi + 1;
+
+SELECT TAN(PI());
+
++-------------------------+
+| TAN(PI())               |
++-------------------------+
+| -1.2246467991473532e-16 |
++-------------------------+
+
+
+-- NÃO ACEITA CARACTERES STRING, VISTO QUE É UMA FUNÇÃO NUMÉRICA
+
+SELECT TAN (PI()+ (A));
+
+ERROR 1054 (42S22): Unknown column 'A' in 'field list'
+
+
+
+

@@ -1,0 +1,90 @@
+# CRIAÇÃO DE ALIAS (APELIDOS DAS TABELAS), EM VEZ DE MOSTRAR OS NOMES DAS TABELAS
+# PODEMOS EXIBIR O TÍTULO QUE QUISER.
+
+SELECT C_CODICLIEN CODIGO, C_NOMECLIEN CLIENTE
+	FROM COMCLIEN 
+   WHERE N_NUMECLIEN NOT IN (1,2,3,4);
+
+
++--------+-----------------------+
+| CODIGO | CLIENTE               |
++--------+-----------------------+
+| 0005   | LIFE PLAN COUNSELLING |
+| 0006   | PRACTI-PLAN           |
+| 0007   | SPORTSWEST            |
+| 0008   | HUGHES MARKETS        |
+| 0009   | AUTO WORKS            |
+| 00010  | DAHLKEMPER            |
++--------+-----------------------+
+
+# SE NÃO TIVÉSSEMOS UTILIZADO UM ALIAS, O RESULTADO DE SEU CABEÇALHO SERIA O QUE ESTÁ ESCRITO NA SUBCONSULTA.
+
+SELECT C_CODIVENDA,
+	(SELECT C_RAZACLIEN
+		FROM COMCLIEN 
+		WHERE N_NUMECLIEN = COMVENDA.N_NUMECLIEN)
+	FROM COMVENDA;
+
+	+-------------+----------------------------------------------------------------------------------+
+| C_CODIVENDA | (SELECT C_RAZACLIEN
+                FROM COMCLIEN
+                WHERE N_NUMECLIEN = COMVENDA.N_NUMECLIEN) |
++-------------+----------------------------------------------------------------------------------+
+| 1           | AARONSON FURNITURE LTD                                                           |
+| 2           | LITTLER  LTDA                                                                    |
+| 3           | KELSEY  NEIGHBOURHOOD                                                            |
+| 4           | GREAT AMERICAN MUSIC                                                             |
+| 5           | LIFE PLAN COUNSELLING                                                            |
+| 6           | PRACTI-PLAN LTDA                                                                 |
+| 7           | SPORTSWEST LTDA                                                                  |
+| 8           | HUGHES MARKETS LTDA                                                              |
+| 9           | AUTO WORKS LTDA                                                                  |
+| 10          | AARONSON FURNITURE LTD                                                           |
+| 11          | AARONSON FURNITURE LTD                                                           |
+| 12          | LITTLER  LTDA                                                                    |
+| 13          | KELSEY  NEIGHBOURHOOD                                                            |
+| 14          | KELSEY  NEIGHBOURHOOD                                                            |
+| 15          | LIFE PLAN COUNSELLING                                                            |
+| 16          | PRACTI-PLAN LTDA                                                                 |
+| 17          | SPORTSWEST LTDA                                                                  |
+| 18          | HUGHES MARKETS LTDA                                                              |
+| 19          | AUTO WORKS LTDA                                                                  |
+| 20          | AUTO WORKS LTDA                                                                  |
++-------------+----------------------------------------------------------------------------------+
+
+# UTILIZANDO O ALIAS:
+
+SELECT C_CODIVENDA COD_VENDA,
+	(SELECT C_RAZACLIEN
+	FROM COMCLIEN 
+	WHERE N_NUMECLIEN = COMVENDA.N_NUMECLIEN) NOME_CLIENTE
+FROM COMVENDA;
+
+# SE FOR MOSTRAR PARA UM USUÁRIO ESSE RESULTADO, UTILIZE O ALIAS, POIS, MUITO PROVAVELMENTE
+# ELE NÃO SABERÁ O QUE SIGNIFICA A SINTAXE DE UM SELECT.
+
++-----------+------------------------+
+| COD_VENDA | NOME_CLIENTE           |
++-----------+------------------------+
+| 1         | AARONSON FURNITURE LTD |
+| 2         | LITTLER  LTDA          |
+| 3         | KELSEY  NEIGHBOURHOOD  |
+| 4         | GREAT AMERICAN MUSIC   |
+| 5         | LIFE PLAN COUNSELLING  |
+| 6         | PRACTI-PLAN LTDA       |
+| 7         | SPORTSWEST LTDA        |
+| 8         | HUGHES MARKETS LTDA    |
+| 9         | AUTO WORKS LTDA        |
+| 10        | AARONSON FURNITURE LTD |
+| 11        | AARONSON FURNITURE LTD |
+| 12        | LITTLER  LTDA          |
+| 13        | KELSEY  NEIGHBOURHOOD  |
+| 14        | KELSEY  NEIGHBOURHOOD  |
+| 15        | LIFE PLAN COUNSELLING  |
+| 16        | PRACTI-PLAN LTDA       |
+| 17        | SPORTSWEST LTDA        |
+| 18        | HUGHES MARKETS LTDA    |
+| 19        | AUTO WORKS LTDA        |
+| 20        | AUTO WORKS LTDA        |
++-----------+------------------------+
+

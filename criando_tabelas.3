@@ -1,0 +1,98 @@
+# CRIANDO AS TABELAS DO PROJETO 
+
+# CRIANDO OS SCRIPTS (INSTRUÇÕES EM SQL)
+
+# TABELA DE CLIENTES 
+CREATE TABLE COMCLIEN(
+	N_NUMECLIEN INT NOT NULL AUTO_INCREMENT, # a cláusula autoa_increment é utilizada para incrementar automaticamente o valor da chave primaria.
+	C_CODICLIEN VARCHAR (10),
+	C_NOMECLIEN VARCHAR (100),
+	C_RAZACLIEN VARCHAR (100),
+	D_DATACLIEN DATE,
+	C_CNPJCLIEN VARCHAR (20),
+	C_FONECLIEN VARCHAR (20),
+PRIMARY KEY (N_NUMECLIEN)); # a chave primaria da tabela será e seu registro será único.
+
+# VERIFICANDO SE A TABELA FOI CRIADA
+
+DESC COMCLIEN;
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| N_NUMECLIEN | int          | NO   | PRI | NULL    | auto_increment |
+| C_CODICLIEN | varchar(10)  | YES  |     | NULL    |                |
+| C_NOMECLIEN | varchar(100) | YES  |     | NULL    |                |
+| C_RAZACLIEN | varchar(100) | YES  |     | NULL    |                |
+| D_DATACLIEN | date         | YES  |     | NULL    |                |
+| C_CNPJCLIEN | varchar(20)  | YES  |     | NULL    |                |
+| C_FONECLIEN | varchar(20)  | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+# TABELA DE FORNECEDORES
+CREATE TABLE COMFORNE(
+	N_NUMEFORNE INT NOT NULL AUTO_INCREMENT,
+	C_CODIFORNE VARCHAR (10),
+	C_NOMEFORNE VARCHAR (100),
+	C_RAZAFORNE VARCHAR (100),
+	C_FONEFORNE VARCHAR (20),
+	PRIMARY KEY(N_NUMEFORNE));
+
+#TABELA DE VENDEDORES
+CREATE TABLE COMVENDE(
+	N_NUMEVENDE INT NOT NULL AUTO_INCREMENT,
+	C_CODIVENDE VARCHAR (10),
+	C_NOMEVENDE VARCHAR (100),
+	C_RAZAVENDE VARCHAR (100),
+	C_FONEVENDE VARCHAR (20),
+	N_PORCVENDE FLOAT (10,2),
+	PRIMARY KEY (N_NUMEVENDE));
+
+# TABELA DE PRODUTOS 
+CREATE TABLE COMPRODU(
+N_NUMEPRODU INT NOT NULL AUTO_INCREMENT,
+C_CODIPRODU VARCHAR (20),
+C_DESCPRODU VARCHAR (100),
+N_VALOPRODU FLOAT (10,2),
+C_SITUPRODU VARCHAR (1),
+N_NUMEFORNE INT,
+PRIMARY KEY (N_NUMEPRODU));
+
+#TABELA DE VENDAS 
+	CREATE TABLE COMVENDA(
+	N_NUMEVENDA INT NOT NULL AUTO_INCREMENT,
+	C_CODIVENDA VARCHAR (10),
+	N_NUMECLIEN INT NOT  NULL, # foreign key
+	N_NUMEFORNE INT NOT NULL, # foreign key
+	N_NUMEVENDE INT NOT NULL, # foreign key
+	N_VALOVENDA FLOAT (10,2),
+	N_DESCVENDA FLOAT (10,2),
+	N_TOTAVENDA FLOAT (10,2),
+	D_DATAVENDA DATE,
+	PRIMARY KEY (N_NUMEVENDA));
+
+#TABELA DE COMISSÃO DE VENDAS
+CREATE TABLE COMIVENDA(
+	N_NUMEIVENDA INT NOT NULL AUTO_INCREMENT,
+	N_NUMEVENDA INT NOT NULL,
+	N_NUMEPRODU INT NOT NULL,
+	N_VALOIVENDA FLOAT (10,2),
+	N_QTDEIVENDA INT,
+	N_DESCIVENDA FLOAT (10,2),
+	PRIMARY KEY (N_NUMEIVENDA));
+
+
+SHOW TABLES;
+
++---------------------+
+| Tables_in_comercial |
++---------------------+
+| comclien            |
+| comivenda           |
+| comprodu            |
+| comvenda            |
+| comvende            |
++---------------------+
+
+
+

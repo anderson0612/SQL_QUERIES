@@ -1,0 +1,24 @@
+## A tabela DUAL é uma tabela especial no MySQL que contém exatamente uma linha e uma coluna. 
+## Essa coluna geralmente é chamada de DUMMY 
+## e contém um valor constante, como 'X'.
+
+-- UTILIZANDO A FUNCTION COM A TABELA DUAL.
+
+SELECT RT_NOME_CLIENTE(1) FROM DUAL;
+
++--------------------+
+| RT_NOME_CLIENTE(1) |
++--------------------+
+| AARONSON FURNITURE |
++--------------------+
+
+-- É IGUAL SE TIVÉSSEMOS FEITO:
+
+SELECT RT_NOME_CLIENTE(1);
+
++--------------------+
+| RT_NOME_CLIENTE(1) |
++--------------------+
+| AARONSON FURNITURE |
++--------------------+
+

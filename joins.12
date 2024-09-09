@@ -1,0 +1,79 @@
+# TRAGA INFORMAÇÃO DE VÁRIAS TABELAS COM JOINS.
+
+# NOS BANCOS DE DADOS RELACIONAIS, AO AO CONSULTAR DUAS TABELAS QUE POSSUEM
+# ALGUM TIPO DE RELACIONAMENTO, DEVE-SE ESPECIFICAR DE QUAL TABELA SÃO ESSES CAMPOS.
+# ALÉM DE FAZER A IGUALDADE ENTRE AS COLUNAS, DEVE-SE FAZER ESPECIFICAR TAMBÉM À QUAL TABELA PERTENCE CADA CAMPO.
+
+# NO SQL, TAMBÉM TEMOS UM COMANDO PARA ORDENAR AS CONSULTAS.
+# PARA ISSO TEMOS, O ORDER BY. ODENANDO PELA RAZÃO SOCIAL DO CLIENTE, O CÓDIGO FICARÁ DA SEGUINTE MANEIRA:
+
+SELECT C_CODICLIEN, C_RAZACLIEN, C_CODIVENDA COD_VENDA
+	FROM COMVENDA, COMCLIEN
+	WHERE COMVENDA.N_NUMECLIEN = COMCLIEN.N_NUMECLIEN
+	ORDER BY C_RAZACLIEN;  
+
++-------------+------------------------+-----------+
+| C_CODICLIEN | C_RAZACLIEN            | COD_VENDA |
++-------------+------------------------+-----------+
+| 0001        | AARONSON FURNITURE LTD | 1         |
+| 0001        | AARONSON FURNITURE LTD | 10        |
+| 0001        | AARONSON FURNITURE LTD | 11        |
+| 0009        | AUTO WORKS LTDA        | 9         |
+| 0009        | AUTO WORKS LTDA        | 19        |
+| 0009        | AUTO WORKS LTDA        | 20        |
+| 0004        | GREAT AMERICAN MUSIC   | 4         |
+| 0008        | HUGHES MARKETS LTDA    | 8         |
+| 0008        | HUGHES MARKETS LTDA    | 18        |
+| 0003        | KELSEY  NEIGHBOURHOOD  | 3         |
+| 0003        | KELSEY  NEIGHBOURHOOD  | 13        |
+| 0003        | KELSEY  NEIGHBOURHOOD  | 14        |
+| 0005        | LIFE PLAN COUNSELLING  | 5         |
+| 0005        | LIFE PLAN COUNSELLING  | 15        |
+| 0002        | LITTLER  LTDA          | 2         |
+| 0002        | LITTLER  LTDA          | 12        |
+| 0006        | PRACTI-PLAN LTDA       | 6         |
+| 0006        | PRACTI-PLAN LTDA       | 16        |
+| 0007        | SPORTSWEST LTDA        | 7         |
+| 0007        | SPORTSWEST LTDA        | 17        |
++-------------+------------------------+-----------+
+
+# A MANEIRA MAIS FORMAL DE ESCREVER UMA CONSULTA COM JOIN É COMO ESTAR APRESENTADO A SEGUIR.
+# PORÉM, NÃO É MAIS E COMUM UTILIZADA NO DIA A DIA, POIS O CÓDIGO FICA UM POUCO MAIS COMPLEXO.
+
+SELECT C_CODICLIEN CODIGO, C_RAZACLIEN RAZAO_SOCIAL,
+C_CODIVENDA CODI_VENDA
+	FROM COMVENDA 
+	JOIN COMCLIEN ON 
+	COMVENDA.N_NUMECLIEN = COMCLIEN.N_NUMECLIEN
+  ORDER BY C_RAZACLIEN;
+
+# ATENÇÃO: AO UTILIZAR VÁRIAS TABELAS PARA FAZER UMA CONSULTA, VOCÊ DEVE SEMPRE FAZER
+# A IGUALDADE ENTRE AS QUE POSSUEM CONSTRAINT, POIS CASO CONTRÁRIO
+# O SGBD SE PERDERÁ E RETORNARÁ OS DADOS DUPLICADOS.
+
++--------+------------------------+------------+
+| CODIGO | RAZAO_SOCIAL           | CODI_VENDA |
++--------+------------------------+------------+
+| 0001   | AARONSON FURNITURE LTD | 1          |
+| 0001   | AARONSON FURNITURE LTD | 10         |
+| 0001   | AARONSON FURNITURE LTD | 11         |
+| 0009   | AUTO WORKS LTDA        | 9          |
+| 0009   | AUTO WORKS LTDA        | 19         |
+| 0009   | AUTO WORKS LTDA        | 20         |
+| 0004   | GREAT AMERICAN MUSIC   | 4          |
+| 0008   | HUGHES MARKETS LTDA    | 8          |
+| 0008   | HUGHES MARKETS LTDA    | 18         |
+| 0003   | KELSEY  NEIGHBOURHOOD  | 3          |
+| 0003   | KELSEY  NEIGHBOURHOOD  | 13         |
+| 0003   | KELSEY  NEIGHBOURHOOD  | 14         |
+| 0005   | LIFE PLAN COUNSELLING  | 5          |
+| 0005   | LIFE PLAN COUNSELLING  | 15         |
+| 0002   | LITTLER  LTDA          | 2          |
+| 0002   | LITTLER  LTDA          | 12         |
+| 0006   | PRACTI-PLAN LTDA       | 6          |
+| 0006   | PRACTI-PLAN LTDA       | 16         |
+| 0007   | SPORTSWEST LTDA        | 7          |
+| 0007   | SPORTSWEST LTDA        | 17         |
++--------+------------------------+------------+
+
+

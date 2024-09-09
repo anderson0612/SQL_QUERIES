@@ -1,0 +1,68 @@
+-- PROCESSANDO E RETORNANDO COM FUNCTIONS
+
+-- CRIANDO UMA FUNCTION PARA RETORNAR O NOME DO CLIENTE
+
+-- Acrescentei a cláusula DETERMINISTIC, que informa que a função sempre retorna o mesmo valor 
+-- para os mesmos parâmetros de entrada.
+DELIMITER $$ 
+CREATE FUNCTION RT_NOME_CLIENTE(VN_NUMECLIEN INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+
+BEGIN
+    DECLARE NOME VARCHAR(50);
+
+    SELECT C_NOMECLIEN 
+    INTO NOME
+    FROM COMCLIEN 
+    WHERE N_NUMECLIEN = VN_NUMECLIEN;
+
+    RETURN NOME;
+END $$
+DELIMITER ;
+
+## ESTOU PASSANDO COMO PARÂMETRO O ID DO CLIENTE IGUAL A 1
+SELECT RT_NOME_CLIENTE(1);
+
++--------------------+
+| RT_NOME_CLIENTE(1) |
++--------------------+
+| AARONSON FURNITURE |
++--------------------+
+
+## RETORNANDO O CÓDIGO DA VENDA, O NOME DO CLIENTE E A 
+## DATA DA VENDA  ORDENANDO PELO NOME E EM SEGUIDA PELA DATA
+
+SELECT C_CODIVENDA,
+	   RT_NOME_CLIENTE (N_NUMECLIEN),
+       D_DATAVENDA
+    FROM COMVENDA
+   ORDER BY 2,3;
+
+
++-------------+-------------------------------+-------------+
+| C_CODIVENDA | RT_NOME_CLIENTE (N_NUMECLIEN) | D_DATAVENDA |
++-------------+-------------------------------+-------------+
+| 1           | AARONSON FURNITURE            | 2015-01-01  |
+| 11          | AARONSON FURNITURE            | 2015-01-01  |
+| 10          | AARONSON FURNITURE            | 2015-01-02  |
+| 9           | AUTO WORKS                    | 2015-01-01  |
+| 19          | AUTO WORKS                    | 2015-01-01  |
+| 20          | AUTO WORKS                    | 2015-01-02  |
+| 4           | GREAT AMERICAN MUSIC          | 2015-01-04  |
+| 8           | HUGHES MARKETS                | 2015-01-04  |
+| 18          | HUGHES MARKETS                | 2015-01-04  |
+| 3           | KELSEY  NEIGHBOURHOOD         | 2015-01-03  |
+| 13          | KELSEY  NEIGHBOURHOOD         | 2015-01-03  |
+| 14          | KELSEY  NEIGHBOURHOOD         | 2015-01-04  |
+| 5           | LIFE PLAN COUNSELLING         | 2015-01-01  |
+| 15          | LIFE PLAN COUNSELLING         | 2015-01-01  |
+| 2           | LITTLER                       | 2015-01-02  |
+| 12          | LITTLER                       | 2015-01-02  |
+| 6           | PRACTI-PLAN                   | 2015-01-02  |
+| 16          | PRACTI-PLAN                   | 2015-01-02  |
+| 7           | SPORTSWEST                    | 2015-01-03  |
+| 17          | SPORTSWEST                    | 2015-01-03  |
++-------------+-------------------------------+-------------+
+
+

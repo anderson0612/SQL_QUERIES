@@ -1,0 +1,173 @@
+#	 ESTRUTURA BÁSICA PARA CONSULTAS
+
+-- O COMANDO SQL UTILIZADO PARA FAZER CONSULTAS É O SELECT.
+-- JUNTO AO SELECT DEVEMOS DIZER AO SGBD DE ONDE VOCÊ QUER SELECIONÁ-LOS 
+-- NO CASO, DE QUAL TABELA QUEREMOS OS REGISTROS. POR ISSO USAMOS O FROM.
+-- QUANDO NÃO QUEREMOS SELECIONAR UMA OU VÁRIOS CAMPOS ESPECÍFICOS UTILIZAMOS O ASTERISCO (*).
+
+SELECT * FROM COMCLIEN;
+
++-------------+-------------+-----------------------+------------------------+-------------+--------------------+----------------+-------------------------+-------------+
+| N_NUMECLIEN | C_CODICLIEN | C_NOMECLIEN           | C_RAZACLIEN            | D_DATACLIEN | C_CNPJCLIEN        | C_FONECLIEN    | C_CIDACLIEN             | C_ESTACLIEN |
++-------------+-------------+-----------------------+------------------------+-------------+--------------------+----------------+-------------------------+-------------+
+|           1 | 0001        | AARONSON FURNITURE    | AARONSON FURNITURE LTD | 2015-02-17  | 17.807.928/0001-85 | (21) 8167-6584 | QUEIMADOS               | RJ          |
+|           2 | 0002        | LITTLER               | LITTLER  LTDA          | 2015-02-17  | 55.643.605/0001-92 | (27) 7990-9502 | SERRA                   | ES          |
+|           3 | 0003        | KELSEY  NEIGHBOURHOOD | KELSEY  NEIGHBOURHOOD  | 2015-02-17  | 05.202.361/0001-34 | (11) 4206-9703 | BRAGANÇA PAULISTA       | SP          |
+|           4 | 0004        | GREAT AMERICAN MUSIC  | GREAT AMERICAN MUSIC   | 2015-02-17  | 11.880.735/0001-73 | (75) 7815-7801 | SANTO ANTÔNIO DE JESUS  | BA          |
+|           5 | 0005        | LIFE PLAN COUNSELLING | LIFE PLAN COUNSELLING  | 2015-02-17  | 75.185.467/0001-52 | (17) 4038-9355 | BEBEDOURO               | SP          |
+|           6 | 0006        | PRACTI-PLAN           | PRACTI-PLAN LTDA       | 2015-02-17  | 32.518.106/0001-78 | (28) 2267-6159 | CACHOEIRO DE ITAPEMIRI  | ES          |
+|           7 | 0007        | SPORTSWEST            | SPORTSWEST LTDA        | 2015-02-17  | 83.175.645/0001-92 | (61) 4094-7184 | TAGUATINGA              | DF          |
+|           8 | 0008        | HUGHES MARKETS        | HUGHES MARKETS LTDA    | 2015-02-17  | 04.728.160/0001-02 | (21) 7984-9809 | RIO DE JANEIRO          | RJ          |
+|           9 | 0009        | AUTO WORKS            | AUTO WORKS LTDA        | 2015-02-17  | 08.271.985/0001-00 | (21) 8548-5555 | RIO DE JANEIRO          | RJ          |
+|          10 | 00010       | DAHLKEMPER            | DAHLKEMPER  LTDA       | 2015-02-17  | 49.815.047/0001-00 | (11) 4519-7670 | SÃO PAULO               | SP          |
++-------------+-------------+-----------------------+------------------------+-------------+--------------------+----------------+------------------
+
+-- SE QUISÉSSEMOS SELECIONAR APENAS O CÓDIGO E A RAZÃO SOCIAL DO CLIENTE
+-- NO LUGAR DO (*) COLOCARÍAMOS OS CAMPOS N_NUMECLIEN, C_CODICLIEN E C_RAZACLIEN.
+
+SELECT N_NUMECLIEN, C_CODICLIEN, C_RAZACLIEN
+	FROM COMCLIEN;
+
++-------------+-------------+------------------------+
+| N_NUMECLIEN | C_CODICLIEN | C_RAZACLIEN            |
++-------------+-------------+------------------------+
+|           1 | 0001        | AARONSON FURNITURE LTD |
+|           2 | 0002        | LITTLER  LTDA          |
+|           3 | 0003        | KELSEY  NEIGHBOURHOOD  |
+|           4 | 0004        | GREAT AMERICAN MUSIC   |
+|           5 | 0005        | LIFE PLAN COUNSELLING  |
+|           6 | 0006        | PRACTI-PLAN LTDA       |
+|           7 | 0007        | SPORTSWEST LTDA        |
+|           8 | 0008        | HUGHES MARKETS LTDA    |
+|           9 | 0009        | AUTO WORKS LTDA        |
+|          10 | 00010       | DAHLKEMPER  LTDA       |
++-------------+-------------+------------------------+
+
+
+SELECT N_NUMECLIEN, C_CODICLIEN, C_NOMECLIEN, C_RAZACLIEN
+	FROM COMCLIEN;
+
++-------------+-------------+-----------------------+------------------------+
+| N_NUMECLIEN | C_CODICLIEN | C_NOMECLIEN           | C_RAZACLIEN            |
++-------------+-------------+-----------------------+------------------------+
+|           1 | 0001        | AARONSON FURNITURE    | AARONSON FURNITURE LTD |
+|           2 | 0002        | LITTLER               | LITTLER  LTDA          |
+|           3 | 0003        | KELSEY  NEIGHBOURHOOD | KELSEY  NEIGHBOURHOOD  |
+|           4 | 0004        | GREAT AMERICAN MUSIC  | GREAT AMERICAN MUSIC   |
+|           5 | 0005        | LIFE PLAN COUNSELLING | LIFE PLAN COUNSELLING  |
+|           6 | 0006        | PRACTI-PLAN           | PRACTI-PLAN LTDA       |
+|           7 | 0007        | SPORTSWEST            | SPORTSWEST LTDA        |
+|           8 | 0008        | HUGHES MARKETS        | HUGHES MARKETS LTDA    |
+|           9 | 0009        | AUTO WORKS            | AUTO WORKS LTDA        |
+|          10 | 00010       | DAHLKEMPER            | DAHLKEMPER  LTDA       |
++-------------+-------------+-----------------------+------------------------+
+
+
+-- PODEMOS CONSULTAR APENAS UM REGISTRO
+-- NESTE CASO, UTILIZAMOS O WHERE.
+-- VAMOS SELECIONAR O CLIENTE COM UMA CLÁUSULA QUE DEVE TER C_CODICLIEN = '0001'
+-- O CÓDIGO FICA ENTRE ASPAS SIMPLES, PORQUE QUEREMOS COMPARAR UMA COLUNA DO TIPO TEXTO.
+-- PARA COLUNA DO TIPO NUMÉRICO, NÃO HÁ NECESSIDADE.
+
+SELECT N_NUMECLIEN, C_CODICLIEN, C_RAZACLIEN
+	FROM COMCLIEN 
+ 	WHERE C_CODICLIEN = '0001';	
+
++-------------+-------------+------------------------+
+| N_NUMECLIEN | C_CODICLIEN | C_RAZACLIEN            |
++-------------+-------------+------------------------+
+|           1 | 0001        | AARONSON FURNITURE LTD |
++-------------+-------------+------------------------+
+
+
+SELECT N_NUMECLIEN, C_CODICLIEN, C_RAZACLIEN
+	FROM COMCLIEN 
+ 	WHERE C_CODICLIEN <> '0001';	
+
+-- OBSERVE QUE ELE TROUXE TODOS OS CLIENTES, EXCETO AQUELE CUJO CÓDIGO É IGUAL A '0001'.
+
++-------------+-------------+-----------------------+
+| N_NUMECLIEN | C_CODICLIEN | C_RAZACLIEN           |
++-------------+-------------+-----------------------+
+|           2 | 0002        | LITTLER  LTDA         |
+|           3 | 0003        | KELSEY  NEIGHBOURHOOD |
+|           4 | 0004        | GREAT AMERICAN MUSIC  |
+|           5 | 0005        | LIFE PLAN COUNSELLING |
+|           6 | 0006        | PRACTI-PLAN LTDA      |
+|           7 | 0007        | SPORTSWEST LTDA       |
+|           8 | 0008        | HUGHES MARKETS LTDA   |
+|           9 | 0009        | AUTO WORKS LTDA       |
+|          10 | 00010       | DAHLKEMPER  LTDA      |
++-------------+-------------+-----------------------+
+
+
+-- PARA COMPARAR UMA STRING, TAMBÉM PODEMOS UTILIZAR O (LIKE)
+-- ELE É USADO PARA ISSO E, EXCEPCIONALMENTE, PARA QUANDO QUEREMOS CONSULTAR UMA E SÓ CONHECEMOS UMA PARTE DELA.
+-- SE QUISERMOS RETORNAR TODOS OS CLIENTES QUE SE INICIAM COM A LETRA L, MONTARÍAMOS NOSSA CONSULTA DA SEGUINTE MANEIRA:
+
+SELECT N_NUMECLIEN, C_CODICLIEN, C_RAZACLIEN
+	FROM COMCLIEN
+	WHERE C_RAZACLIEN LIKE 'L%';
+
+-- O SÍMBOLO DE % (PORCENTO) É UM CURINGA NO SQL. QUANDO NÃO SABEMOS PARTE DA STRING,
+-- PODEMOS UTILIZÁ-LO NO INÍCIO, NO MEIO OU NO FIM DELA.
+
++-------------+-------------+-----------------------+
+| N_NUMECLIEN | C_CODICLIEN | C_RAZACLIEN           |
++-------------+-------------+-----------------------+
+|           2 | 0002        | LITTLER  LTDA         |
+|           5 | 0005        | LIFE PLAN COUNSELLING |
++-------------+-------------+-----------------------+
+
+# DISTINCT()
+
+-- E SE FIZÉSSEMOS UMA LISTA DE TODOS OS CLIENTES QUE COMPRARAM ALGO?
+-- SE FOSSE APENAS A CONSULTA:
+
+SELECT N_NUMECLIEN FROM COMVENDA;
+
+
++-------------+
+| N_NUMECLIEN |
++-------------+
+|           1 |
+|           1 |
+|           1 |
+|           2 |
+|           2 |
+|           3 |
+|           3 |
+|           3 |
+|           4 |
+|           5 ||           5 |
+|           6 |
+|           6 |
+|           7 |
+|           7 |
+|           8 |
+|           8 |
+|           9 |
+|           9 |
+|           9 |
++-------------+
+
+SELECT DISTINCT N_NUMECLIEN
+	FROM COMVENDA;
+
+-- ISSO RETORNARIA UMA LISTA DE CLIENTES E DE VENDAS REPETIDAS, SE O CLIENTE POSSUIR MAIS DE UMA VENDA.
+-- PARA NÃO SELECIONAR UM REGISTRO IGUAL AO OUTRO, UTILIZAMOS O DISTINCT.
+-- TEREMOS A LISTA DE CLIENTES QUE FIZERAM AO MENOS UMA COMPRA E SEM NENHUMA REPETIÇÃO.
+
++-------------+
+| N_NUMECLIEN |
++-------------+
+|           1 |
+|           2 |
+|           3 |
+|           4 |
+|           5 |
+|           6 |
+|           7 |
+|           8 |
+|           9 |
++-------------+

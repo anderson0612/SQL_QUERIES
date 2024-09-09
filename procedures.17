@@ -1,0 +1,105 @@
+-- CRIANDO UM CAMPO PARA ARMAZENAR O VALOR DA COMISSÃO
+
+delimiter $$
+
+create procedure processa_comissionamento(
+    in  data_inicial     date,
+    in  data_final       date,
+    out total_processado int
+)
+begin
+    declare total_venda    float(10,2) default 0;
+    declare venda          int         default 0;
+    declare vendedor       int         default 0;
+    declare comissao       float(10,2) default 0;
+    declare valor_comissao float(10,2) default 0;
+    declare aux            int         default 0;
+    declare fimloop        int         default 0;
+
+    -- Cursor para buscar os registros a serem processados
+    declare busca_pedido cursor for 
+        select n_numevenda,
+               n_totavenda,
+               n_numevende
+          from comvenda
+         where d_datavenda between data_inicial 
+           and data_final
+           and n_totavenda > 0;
+
+    -- Handler para evitar erros ao final do cursor
+    declare continue handler for not found 
+    set fimloop = 1;
+
+    -- Abro o cursor
+    open busca_pedido;
+
+    -- Inicio do loop
+    vendas: loop
+        -- Verifico se o loop terminou
+        if fimloop = 1 then 
+            leave vendas;
+        end if;
+
+        -- Recebo o resultado da consulta
+        fetch busca_pedido into venda, total_venda, vendedor;
+
+        -- Busco o valor do percentual de comissão do vendedor
+        select n_porcvende 
+          into comissao 
+          from comvende
+         where n_numevende = vendedor
+         limit 1;  -- Certifique-se de pegar apenas um resultado
+
+        -- Verifico se o percentual do vendedor é maior que zero
+        if comissao > 0 then 
+            set valor_comissao = (total_venda * comissao) / 100;
+
+            -- Atualizo a tabela comvenda com o valor da comissão
+            update comvenda 
+               set n_vcomvenda = valor_comissao
+             where n_numevenda = venda;
+
+        elseif comissao = 0 then
+            -- Se o percentual for zero, comissao é zero
+            update comvenda 
+               set n_vcomvenda = 0
+             where n_numevenda = venda;
+
+        else 
+            -- Se o vendedor não possui registro, comissao é 1%
+            set comissao = 1;
+            set valor_comissao = (total_venda * comissao) / 100;
+            
+            update comvenda 
+               set n_vcomvenda = valor_comissao
+             where n_numevenda = venda;
+        end if;
+
+        -- Reseto comissao para próxima iteração
+        set comissao = 0;
+        -- Contador de vendas processadas
+        set aux = aux + 1;
+
+    end loop vendas;
+
+    -- Atribuo o total de vendas processadas à variável de saída
+    set total_processado = aux;
+
+    -- Fecho o cursor
+    close busca_pedido;
+end $$
+
+delimiter ;
+
+-- Exemplo de chamada do procedimento
+call processa_comissionamento('2015-01-01', '2015-05-30', @a);
+select @a;
++------+
+| @a   |
++------+
+|   21 |
++------+
+
+
+--Excluindo procedures
+drop procedure processa_comissionamento;
